@@ -2,7 +2,7 @@ use bevy::{prelude::*, sprite::collide_aabb::collide};
 
 use rand::prelude::*;
 
-use crate::{snake::SnakeHead, AppState, Cell, CELL_SIZE, X_LENGTH, Y_LENGTH};
+use crate::{snake::SnakeHead, Cell, GameState, CELL_SIZE, X_LENGTH, Y_LENGTH};
 
 #[derive(Component)]
 pub struct Food;
@@ -15,10 +15,10 @@ impl Plugin for FoodPlugin {
         app.add_event::<EatFoodEvent>()
             .add_system(
                 food_spawn
-                    .in_set(OnUpdate(AppState::InGame))
+                    .in_set(OnUpdate(GameState::Playing))
                     .run_if(cheak_food_exist),
             )
-            .add_system(check_food_collision.in_set(OnUpdate(AppState::InGame)));
+            .add_system(check_food_collision.in_set(OnUpdate(GameState::Playing)));
     }
 }
 

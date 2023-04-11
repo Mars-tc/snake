@@ -2,7 +2,9 @@ use std::time::Duration;
 
 use bevy::{prelude::*, time::common_conditions::on_timer};
 
-use crate::{food::EatFoodEvent, AppResource, AppState, Cell, SnakeDirection, CELL_SIZE};
+use crate::{
+    food::EatFoodEvent, AppResource, AppState, Cell, GameState, SnakeDirection, CELL_SIZE,
+};
 
 #[derive(Resource)]
 pub struct Snake {
@@ -21,10 +23,10 @@ pub struct SnakePlugin;
 impl Plugin for SnakePlugin {
     fn build(&self, app: &mut App) {
         app.add_system(snake_spawn.in_schedule(OnEnter(AppState::InGame)))
-            .add_system(stronger.in_set(OnUpdate(AppState::InGame)))
+            .add_system(stronger.in_set(OnUpdate(GameState::Playing)))
             .add_system(
                 snake_move
-                    .in_set(OnUpdate(AppState::InGame))
+                    .in_set(OnUpdate(GameState::Playing))
                     .run_if(on_timer(Duration::from_secs_f32(0.5))),
             );
     }
